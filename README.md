@@ -14,3 +14,5 @@ For configuration, the application needs an XML file containing the wirings that
 ```
 
 The example contains a single wiring defined by the `wiring` element. The sub-elements declare the input channel id as well as the output channel id of the wiring.
+
+The configuration file will be read at bundle activation and all declared wirings will be applied. During runtime, a file watcher recognizes changes in the config file and applies them automatically.
