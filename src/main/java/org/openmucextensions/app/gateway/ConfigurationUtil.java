@@ -44,6 +44,10 @@ public class ConfigurationUtil {
 						if(element.getElementsByTagName("output").getLength() > 0) {
 							String outputChannelId = element.getElementsByTagName("output").item(0).getTextContent();
 							result.add(new Wiring(inputChannelId, outputChannelId));
+							String attValue= element.getAttribute("bidirectionalConnection").toLowerCase();
+							if(attValue.equals("true")){
+								result.add(new Wiring(outputChannelId, inputChannelId));
+							}
 						}
 					}
 				}

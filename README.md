@@ -10,9 +10,30 @@ For configuration, the application needs an XML file containing the wirings that
 		<input>input_channel_id</input>
 		<output>output_channel_id</output>
 	</wiring>
+	<wiring bidirectionalConnection="True">
+		<input>input_channel_2_id</input>
+		<output>output_channel_2_id</output>
+	</wiring>
 </wirings>
 ```
 
-The example contains a single wiring defined by the `wiring` element. The sub-elements declare the input channel id as well as the output channel id of the wiring.
+The example contains two wirings defined by the `wiring` element. The sub-elements declare the input channel id as well as the output channel id of the wiring.
+
+
+The second `wiring` element contains the optional `bidirectionalConnection` attribute. This `wiring` element is equivalent to:
+
+```
+...
+	<wiring>
+		<input>input_channel_2_id</input>
+		<output>output_channel_2_id</output>
+	</wiring>
+	<wiring>
+		<input>output_channel_2_id</input>
+		<output>input_channel_2_id</output>
+...
+```
+
+It means new values from both channels will be forwared to the opposite channel.
 
 The configuration file will be read at bundle activation and all declared wirings will be applied. During runtime, a file watcher recognizes changes in the config file and applies them automatically.

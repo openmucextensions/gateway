@@ -1,12 +1,13 @@
 package org.openmucextensions.app.gateway;
 
 import org.openmuc.framework.data.Record;
+import org.openmuc.framework.data.Value;
 import org.openmuc.framework.dataaccess.Channel;
 import org.openmuc.framework.dataaccess.DataAccessService;
 import org.openmuc.framework.dataaccess.RecordListener;
 
 public class Wiring implements RecordListener {
-	
+
 	private final String inputChannelId;
 	private final String outputChannelId;
 	
@@ -22,8 +23,14 @@ public class Wiring implements RecordListener {
 
 	@Override
 	public void newRecord(Record record) {
-		if(outputChannel != null && outputChannel.isConnected()) {
-			outputChannel.write(record.getValue());
+		if(outputChannel != null && outputChannel.isConnected()){
+			Value outLastValue = outputChannel.getLatestRecord().getValue();
+			// only write value if it has changed. This inhibits a circular write for a bidirectional connection
+			if( record.getValue() != null &&
+					( outLastValue == null ||
+						!outputChannel.getLatestRecord().getValue().asString().equals(record.getValue().asString()))) {
+				outputChannel.write(record.getValue());
+			}
 		}
 	}
 	
